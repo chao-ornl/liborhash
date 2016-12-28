@@ -14,10 +14,16 @@
 #include "orhash_constants.h"
 
 int
-orhash_init (void* buffer,
-             size_t buffer_size,
-             size_t block_size,
+orhash_init (void     *buffer,
+             size_t   buffer_size,
+             size_t   block_size,
              orhash_t **hash);
+
+int
+orhash_reinit (orhash_t *hash_in,
+               void     *buffer,
+               size_t   buffer_size,
+               long     block_offset);
 
 int
 orhash_fini (orhash_t **hash);
@@ -30,5 +36,8 @@ orhash_compute_hash (orhash_t *orhash);
 
 int
 orhash_get_dirty_ratio (orhash_t *hash, double *ratio);
+
+void
+orhash_print (orhash_t *hash);
 
 #endif

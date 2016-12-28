@@ -6,7 +6,7 @@
 
 #include "orhash.h"
 
-#define ARRAY_SIZE  (1024)
+#define ARRAY_SIZE  (10)
 
 int
 main (int argc, char **argv)
@@ -43,25 +43,24 @@ main (int argc, char **argv)
         goto exit_on_failure;
     }
 
-    for (i = 0; i < ARRAY_SIZE / 2; i++)
+    orhash_print (hash);
+
+    /* We shift blocks to the right by 2 blocks */
+    for (i = 0; i < 2; i++)
     {
-        array[i] = i * 2.0;
+        array[ARRAY_SIZE - 1  - i] = array[ARRAY_SIZE - 2 - i];
+        array[0] = 32.0;
+        array[1] = 42.0;
     }
 
-    rc = orhash_compute_hash (hash);
+    rc = orhash_reinit (hash, array, ARRAY_SIZE * sizeof (double), -2);
     if (rc != ORHASH_SUCCESS)
     {
-        fprintf (stderr, "ERROR: orhash_compute_hash() failed (line: %d)\n", __LINE__);
+        fprintf (stderr, "ERROR: orhash_reinit() failed (line: %d)\n", __LINE__);
         goto exit_on_failure;
     }
 
-    rc = orhash_get_dirty_ratio (hash, &ratio);
-    if (rc != ORHASH_SUCCESS)
-    {
-        fprintf (stderr, "ERROR: orhash_get_dirty_ratio() failed (line: %d)\n", __LINE__);
-        goto exit_on_failure;
-    }
-    printf ("*** Dirty ratio: %.3f\n", ratio);
+    orhash_print (hash);
 
     rc = orhash_fini (&hash);
     if (rc != ORHASH_SUCCESS)
