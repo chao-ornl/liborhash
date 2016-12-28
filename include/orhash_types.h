@@ -9,14 +9,21 @@
 
 #define HASH_LEN    (32)
 
+typedef struct blockhash_s {
+    unsigned char   *hash;
+    int             index;
+} blockhash_t;
+
 typedef struct orhash_s {
     void            *buffer;
-    unsigned char   **hash;
-    unsigned char   **ref_hash;
+    blockhash_t     **hash;
+    blockhash_t     **ref_hash;
     size_t          buffer_size;
     size_t          block_size;
     size_t          num_blocks;
     size_t          last_block_size;
+    int             hash_start_index;
+    int             refhash_start_index;
     MHASH           td;
 } orhash_t;
 
